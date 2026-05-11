@@ -17,7 +17,7 @@ const PORT = 5001;
 
 // CORS konfiguratsiyasi
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5172', 'http://127.0.0.1:5173'],
+  origin: true, // Hamma domendan ruxsat berish (Production'da buni o'zgartirish mumkin)
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -54,10 +54,14 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`!!! SERVER IS UPDATED AND RUNNING !!!`);
-  console.log(`PORT: ${PORT}`);
-  console.log(`=========================================`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(`!!! SERVER IS UPDATED AND RUNNING !!!`);
+    console.log(`PORT: ${PORT}`);
+    console.log(`=========================================`);
+  });
+}
+
+export default app;
  
