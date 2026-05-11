@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-player": "^3.4.0",
+    "screenfull": "^6.0.2"
+  }
+}

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+*.log
+firebase-service-account.json
+backend/firebase-service-account.json
+backend/.env
+netconfig-react/dist/
+netconfig-react/node_modules/
+backend/node_modules/
+uploads/
+backend/uploads/
