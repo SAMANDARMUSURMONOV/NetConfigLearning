@@ -13,7 +13,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import apiService from '../../services/api';
+import apiService, { BASE_URL } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useSettings } from '../../context/SettingsContext';
 import { toast } from 'react-toastify';
@@ -135,7 +135,7 @@ const Settings = () => {
                             <div className="flex items-center gap-6">
                                 <div className="w-24 h-24 rounded-2xl bg-slate-100 dark:bg-dark-900 border-2 border-dashed border-slate-200 dark:border-dark-700 flex items-center justify-center text-slate-400 overflow-hidden relative group">
                                     {settings.logoUrl ? (
-                                        <img src={`http://localhost:5001${settings.logoUrl}`} alt="Logo" className="w-full h-full object-contain p-2" />
+                                        <img src={`${BASE_URL}${settings.logoUrl}`} alt="Logo" className="w-full h-full object-contain p-2" />
                                     ) : (
                                         <ImageIcon size={32} />
                                     )}

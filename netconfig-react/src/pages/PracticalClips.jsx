@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import apiService from '../services/api';
+import apiService, { BASE_URL } from '../services/api';
 import { Play, Loader2, Video, X, Maximize2 } from 'lucide-react';
 
 const PracticalClips = () => {
@@ -42,7 +42,7 @@ const PracticalClips = () => {
 
     // 3. Local/Internal
     if (url.startsWith('/uploads')) {
-      return { type: 'local', url: `http://localhost:5001${url}` };
+      return { type: 'local', url: `${BASE_URL}${url}` };
     }
 
     return { type: 'other', url: url };

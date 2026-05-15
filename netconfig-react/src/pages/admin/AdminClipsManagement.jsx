@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trash2, Plus, Upload, Loader2, Video } from 'lucide-react';
-import apiService from '../../services/api';
+import apiService, { BASE_URL } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminClipsManagement = () => {
@@ -252,7 +252,7 @@ const AdminClipsManagement = () => {
               <div key={clip.id} className="p-6 flex flex-col md:flex-row gap-6 items-start hover:bg-slate-50 dark:hover:bg-dark-900/30 transition-colors group">
                 <div className="w-full md:w-48 aspect-[9/16] bg-black rounded-xl overflow-hidden shrink-0 shadow-md">
                   <video className="w-full h-full object-contain">
-                    <source src={`http://localhost:5001${clip.videoUrl}`} type="video/mp4" />
+                    <source src={`${BASE_URL}${clip.videoUrl}`} type="video/mp4" />
                   </video>
                 </div>
                 
