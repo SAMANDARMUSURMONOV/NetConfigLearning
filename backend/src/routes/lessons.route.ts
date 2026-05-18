@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getLessons, createLesson, getLessonById, updateLesson, deleteLesson, updateLessonQuiz, uploadLessonVideo, uploadLessonFile } from '../controllers/lessons.controller';
 import { verifyToken, verifyAdmin } from '../middlewares/auth.middleware';
 import multer from 'multer';
+import fs from 'fs';
 
 // Multer configuration for local storage
 const storage = multer.diskStorage({
@@ -11,6 +12,12 @@ const storage = multer.diskStorage({
     if (file.fieldname === 'file') folder = 'uploads/lessons/file';
     if (file.fieldname === 'thumbnail') folder = 'uploads/lessons/thumbnail';
     if (file.fieldname === 'lectureNote') folder = 'uploads/lessons/lectures';
+    
+    // Ensure directory exists
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder, { recursive: true });
+    }
+    
     cb(null, folder);
   },
   filename: (req, file, cb) => {

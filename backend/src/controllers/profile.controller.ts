@@ -12,7 +12,9 @@ export const uploadAvatar = async (req: Request, res: Response) => {
 
     // Construct the public URL for the avatar
     // Since we are using local storage, we point to the /uploads static route
-    const avatarUrl = `http://localhost:5001/uploads/avatars/${file.filename}`;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const baseUrl = `${protocol}://${req.get('host')}`;
+    const avatarUrl = `${baseUrl}/uploads/avatars/${file.filename}`;
 
     // Update Firebase user profile
     await auth.updateUser(userUid, {

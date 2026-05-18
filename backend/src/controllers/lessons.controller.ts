@@ -107,8 +107,10 @@ export const uploadLessonVideo = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        const videoUrl = `http://localhost:5001/uploads/lessons/video/${req.file.filename}`;
-        console.log(`[VIDEO-UPLOAD] Success (Local): ${videoUrl}`);
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const baseUrl = `${protocol}://${req.get('host')}`;
+        const videoUrl = `${baseUrl}/uploads/lessons/video/${req.file.filename}`;
+        console.log(`[VIDEO-UPLOAD] Success: ${videoUrl}`);
         
         res.status(200).json({ 
             message: 'Video uploaded successfully', 
@@ -127,8 +129,10 @@ export const uploadLessonFile = async (req: Request, res: Response) => {
         }
 
         const folder = req.file.destination.split('/').pop();
-        const fileUrl = `http://localhost:5001/uploads/lessons/${folder}/${req.file.filename}`;
-        console.log(`[UPLOAD] Success (Local): ${fileUrl}`);
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const baseUrl = `${protocol}://${req.get('host')}`;
+        const fileUrl = `${baseUrl}/uploads/lessons/${folder}/${req.file.filename}`;
+        console.log(`[UPLOAD] Success: ${fileUrl}`);
         
         res.status(200).json({ 
             message: 'File uploaded successfully', 

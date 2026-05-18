@@ -51,7 +51,9 @@ export const uploadLogo = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
         
-        const logoUrl = `/uploads/branding/${req.file.filename}`;
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const baseUrl = `${protocol}://${req.get('host')}`;
+        const logoUrl = `${baseUrl}/uploads/branding/${req.file.filename}`;
         
         // Optionally update the logo URL in settings automatically
         await db.collection(SETTINGS_COLLECTION).doc(GLOBAL_SETTINGS_ID).set({ logoUrl }, { merge: true });
