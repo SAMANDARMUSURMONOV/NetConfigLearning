@@ -2,6 +2,10 @@
   "name": "netconfig-learning-root",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "build": "npm install --prefix backend && npm run build --prefix backend",
+    "start": "npm start --prefix backend"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
