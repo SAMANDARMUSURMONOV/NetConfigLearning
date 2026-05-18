@@ -14,7 +14,7 @@ import settingsRouter from './routes/settings.route';
 import clipsRouter from './routes/clips.route';
 import progressRouter from './routes/progress.route';
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 // CORS konfiguratsiyasi
 const corsOptions = {
@@ -55,7 +55,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-if (process.env.NODE_ENV !== 'production') {
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`=========================================`);
     console.log(`!!! SERVER IS UPDATED AND RUNNING !!!`);
