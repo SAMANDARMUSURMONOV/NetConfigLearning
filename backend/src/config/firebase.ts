@@ -3,6 +3,29 @@ import * as path from 'path';
 
 let serviceAccount: any;
 
+function parseRobustServiceAccount(jsonStr: string): any {
+  try {
+    return JSON.parse(jsonStr);
+  } catch (e: any) {
+    console.warn('Standard JSON.parse failed, attempting robust regex parsing for Firebase...', e.message);
+    const projectId = jsonStr.match(/"project_id"\s*:\s*"([^"]+)"/)?.[1];
+    const clientEmail = jsonStr.match(/"client_email"\s*:\s*"([^"]+)"/)?.[1];
+    let privateKey = jsonStr.match(/"private_key"\s*:\s*"([\s\S]+?)"/)?.[1];
+    
+    if (projectId && clientEmail && privateKey) {
+      privateKey = privateKey
+        .replace(/\\n/g, '\n')
+        .replace(/\n/g, '\n');
+      return {
+        projectId,
+        clientEmail,
+        privateKey
+      };
+    }
+    throw e;
+  }
+}
+
 try {
   if (process.env.FB_PROJECT_ID && process.env.FB_PRIVATE_KEY && process.env.FB_CLIENT_EMAIL) {
     // Alohida o'zgaruvchilardan yig'ish
@@ -12,9 +35,9 @@ try {
       privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'),
     };
   } else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    serviceAccount = parseRobustServiceAccount(process.env.FIREBASE_SERVICE_ACCOUNT);
   } else if (process.env.FIREBASE_SECRET_JSON) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SECRET_JSON);
+    serviceAccount = parseRobustServiceAccount(process.env.FIREBASE_SECRET_JSON);
   } else {
     const fs = require('fs');
     const localPath = path.resolve(process.cwd(), 'firebase-service-account.json');
