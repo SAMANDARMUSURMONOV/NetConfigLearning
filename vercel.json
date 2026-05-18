@@ -19,8 +19,8 @@
       "destination": "backend/src/index.ts"
     },
     {
-      "source": "/(.*)",
-      "destination": "netconfig-react/$1"
+      "source": "/((?!api/).*)",
+      "destination": "netconfig-react/index.html"
     }
   ]
 }
