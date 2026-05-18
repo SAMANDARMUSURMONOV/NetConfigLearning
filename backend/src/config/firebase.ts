@@ -3,9 +3,27 @@ import * as path from 'path';
 
 let serviceAccount: any;
 
+function cleanPrivateKey(rawKey: string): string {
+  let body = rawKey
+    .replace('-----BEGIN PRIVATE KEY-----', '')
+    .replace('-----END PRIVATE KEY-----', '');
+  
+  body = body
+    .replace(/\\n/g, '')
+    .replace(/\n/g, '')
+    .replace(/\r/g, '')
+    .replace(/\s+/g, '');
+    
+  return `-----BEGIN PRIVATE KEY-----\n${body}\n-----END PRIVATE KEY-----`;
+}
+
 function parseRobustServiceAccount(jsonStr: string): any {
   try {
-    return JSON.parse(jsonStr);
+    const parsed = JSON.parse(jsonStr);
+    if (parsed && parsed.private_key) {
+      parsed.private_key = cleanPrivateKey(parsed.private_key);
+    }
+    return parsed;
   } catch (e: any) {
     console.warn('Standard JSON.parse failed, attempting robust regex parsing for Firebase...', e.message);
     const projectId = jsonStr.match(/"project_id"\s*:\s*"([^"]+)"/)?.[1];
@@ -13,9 +31,7 @@ function parseRobustServiceAccount(jsonStr: string): any {
     let privateKey = jsonStr.match(/"private_key"\s*:\s*"([\s\S]+?)"/)?.[1];
     
     if (projectId && clientEmail && privateKey) {
-      privateKey = privateKey
-        .replace(/\\n/g, '\n')
-        .replace(/\n/g, '\n');
+      privateKey = cleanPrivateKey(privateKey);
       return {
         projectId,
         clientEmail,
@@ -32,7 +48,7 @@ try {
     serviceAccount = {
       projectId: process.env.FB_PROJECT_ID,
       clientEmail: process.env.FB_CLIENT_EMAIL,
-      privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      privateKey: cleanPrivateKey(process.env.FB_PRIVATE_KEY),
     };
   } else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     serviceAccount = parseRobustServiceAccount(process.env.FIREBASE_SERVICE_ACCOUNT);
