@@ -9,12 +9,18 @@ try {
     serviceAccount = {
       projectId: process.env.FB_PROJECT_ID,
       clientEmail: process.env.FB_CLIENT_EMAIL,
-      privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'), // \n belgilarni haqiqiy qatorga aylantirish
+      privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'),
     };
   } else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
   } else {
-    serviceAccount = require(path.resolve(__dirname, '../../firebase-service-account.json'));
+    const fs = require('fs');
+    const localPath = path.resolve(process.cwd(), 'firebase-service-account.json');
+    if (fs.existsSync(localPath)) {
+      serviceAccount = JSON.parse(fs.readFileSync(localPath, 'utf8'));
+    } else {
+      console.warn('Firebase credentials not found in env or firebase-service-account.json!');
+    }
   }
 } catch (error) {
   console.error('Firebase service account could not be loaded:', error);

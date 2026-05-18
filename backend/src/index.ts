@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
+// config() ni routerlarni import qilishdan oldin chaqirish kerak!
+dotenv.config();
+
 import lessonsRouter from './routes/lessons.route';
 import usersRouter from './routes/users.route';
 import certificatesRouter from './routes/certificates.route';
@@ -9,9 +13,6 @@ import profileRouter from './routes/profile.route';
 import settingsRouter from './routes/settings.route';
 import clipsRouter from './routes/clips.route';
 import progressRouter from './routes/progress.route';
-
-dotenv.config();
-
 const app = express();
 const PORT = 5001;
 
@@ -64,4 +65,3 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default app;
- 
