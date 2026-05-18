@@ -13,8 +13,14 @@ function cleanPrivateKey(rawKey: string): string {
     .replace(/\n/g, '')
     .replace(/\r/g, '')
     .replace(/\s+/g, '');
+  
+  const lines: string[] = [];
+  for (let i = 0; i < body.length; i += 64) {
+    lines.push(body.substring(i, i + 64));
+  }
+  const formattedBody = lines.join('\n');
     
-  return `-----BEGIN PRIVATE KEY-----\n${body}\n-----END PRIVATE KEY-----`;
+  return `-----BEGIN PRIVATE KEY-----\n${formattedBody}\n-----END PRIVATE KEY-----\n`;
 }
 
 function parseRobustServiceAccount(jsonStr: string): any {
