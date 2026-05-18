@@ -19,7 +19,11 @@
       "destination": "backend/src/index.ts"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/(.*\\.[a-zA-Z0-9]+)",
+      "destination": "netconfig-react/$1"
+    },
+    {
+      "source": "/(.*)",
       "destination": "netconfig-react/index.html"
     }
   ]
