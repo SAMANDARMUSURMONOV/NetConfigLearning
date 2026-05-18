@@ -1,4 +1,4 @@
-export const BASE_URL = import.meta.env.PROD ? '' : 'http://localhost:5001';
+export const BASE_URL = import.meta.env.PROD ? 'https://netconfiglearning.onrender.com' : 'http://localhost:5001';
 const API_URL = `${BASE_URL}/api`;
 
 export const apiService = {
