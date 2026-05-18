@@ -13,6 +13,8 @@ try {
     };
   } else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } else if (process.env.FIREBASE_SECRET_JSON) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SECRET_JSON);
   } else {
     const fs = require('fs');
     const localPath = path.resolve(process.cwd(), 'firebase-service-account.json');
